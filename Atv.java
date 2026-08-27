@@ -9,79 +9,109 @@ public class Atv {
         String[] nomes = new String[capacidade];
         int[] quantidades = new int[capacidade];
         int qtd = 0;
-        
-        System.out.println("=== Cadastro de Produtos ===");
-        System.out.print("Quantos produtos vai cadastrar agora? (Máx " + capacidade + "): ");
-        int numCadastro = sc.nextInt();
-        sc.nextLine(); 
+        int opcao = 0;
 
-        for (int i = 0; i < numCadastro && qtd < capacidade; i++) {
-            System.out.print("Digite o nome do produto: ");
-            nomes[qtd] = sc.nextLine();
-            
-            System.out.print("Digite a quantidade em estoque: ");
-            quantidades[qtd] = sc.nextInt();
-            sc.nextLine(); 
-            
-            qtd++; 
-        }
+        do {
+            System.out.println("\n=== Sistema de Controle de Estoque ===");
+            System.out.println("1 - Cadastrar produto");
+            System.out.println("2 - Listar produtos");
+            System.out.println("3 - Pesquisar produto");
+            System.out.println("4 - Alterar produto");
+            System.out.println("5 - Remover produto");
+            System.out.println("6 - Sair do sistema");
+            System.out.print("Escolha uma opção: ");
+            opcao = sc.nextInt();
+            sc.nextLine(); // Limpar o buffer
 
-        listar(nomes, quantidades, qtd);
+            switch (opcao) {
+                case 1:
+                    if (qtd < capacidade) {
+                        System.out.print("Digite o nome do produto: ");
+                        nomes[qtd] = sc.nextLine();
+                        System.out.print("Digite a quantidade em estoque: ");
+                        quantidades[qtd] = sc.nextInt();
+                        qtd++;
+                        System.out.println("Produto cadastrado com sucesso!");
+                    } else {
+                        System.out.println("Capacidade máxima (" + capacidade + ") atingida!");
+                    }
+                    break;
 
-        System.out.println("\n=== Alterar Produto ===");
-        System.out.print("Digite o nome do produto para alterar: ");
-        String buscaAlterar = sc.nextLine();
-        int posAlterar = -1; 
+                case 2:
+                    listar(nomes, quantidades, qtd);
+                    break;
 
-        for (int i = 0; i < qtd; i++) {
-            if (nomes[i].equalsIgnoreCase(buscaAlterar)) {
-                posAlterar = i;
-                break;
+                case 3:
+                    System.out.print("Digite o nome do produto para pesquisar: ");
+                    String busca = sc.nextLine();
+                    boolean encontrado = false;
+                    for (int i = 0; i < qtd; i++) {
+                        if (nomes[i].equalsIgnoreCase(busca)) {
+                            System.out.println("Produto encontrado: Índice [" + i + "] | " + nomes[i] + " - " + quantidades[i] + " unidades");
+                            encontrado = true;
+                            break;
+                        }
+                    }
+                    if (!encontrado) System.out.println("Produto não encontrado.");
+                    break;
+
+                case 4:
+                    System.out.print("Digite o nome do produto para alterar: ");
+                    String buscaAlterar = sc.nextLine();
+                    int posAlterar = -1;
+
+                    for (int i = 0; i < qtd; i++) {
+                        if (nomes[i].equalsIgnoreCase(buscaAlterar)) {
+                            posAlterar = i;
+                            break;
+                        }
+                    }
+
+                    if (posAlterar != -1) {
+                        System.out.print("Digite o novo nome: ");
+                        nomes[posAlterar] = sc.nextLine();
+                        System.out.print("Digite a nova quantidade: ");
+                        quantidades[posAlterar] = sc.nextInt();
+                        System.out.println("Produto alterado com sucesso!");
+                    } else {
+                        System.out.println("Produto não encontrado.");
+                    }
+                    break;
+
+                case 5:
+                    System.out.print("Digite o nome do produto para remover: ");
+                    String buscaRemover = sc.nextLine();
+                    int posRemover = -1;
+
+                    for (int i = 0; i < qtd; i++) {
+                        if (nomes[i].equalsIgnoreCase(buscaRemover)) {
+                            posRemover = i;
+                            break;
+                        }
+                    }
+
+                    if (posRemover != -1) {
+                        for (int i = posRemover; i < qtd - 1; i++) {
+                            nomes[i] = nomes[i + 1];
+                            quantidades[i] = quantidades[i + 1];
+                        }
+                        nomes[qtd - 1] = null;
+                        quantidades[qtd - 1] = 0;
+                        qtd--;
+                        System.out.println("Produto removido com sucesso!");
+                    } else {
+                        System.out.println("Produto não encontrado.");
+                    }
+                    break;
+
+                case 6:
+                    System.out.println("Saindo do sistema...");
+                    break;
+
+                default:
+                    System.out.println("Opção inválida. Tente novamente.");
             }
-        }
-
-        if (posAlterar != -1) {
-            System.out.print("Digite o novo nome: ");
-            nomes[posAlterar] = sc.nextLine();
-            
-            System.out.print("Digite a nova quantidade: ");
-            quantidades[posAlterar] = sc.nextInt();
-            sc.nextLine();
-        } else {
-            System.out.println("Produto não encontrado.");
-        }
-
-        System.out.println("\n=== Remover Produto ===");
-        System.out.print("Digite o nome do produto para remover: ");
-        String buscaRemover = sc.nextLine();
-        int posRemover = -1;
-
-
-        for (int i = 0; i < qtd; i++) {
-            if (nomes[i].equalsIgnoreCase(buscaRemover)) {
-                posRemover = i;
-                break;
-            }
-        }
-
-        if (posRemover != -1) {
-            for (int i = posRemover; i < qtd - 1; i++) {
-                nomes[i] = nomes[i + 1];
-                quantidades[i] = quantidades[i + 1];
-            }
-            
-
-            nomes[qtd - 1] = null;
-            quantidades[qtd - 1] = 0;
-            qtd--; 
-            System.out.println("Produto removido com sucesso!");
-        } else {
-            System.out.println("Produto não encontrado.");
-        }
-
-
-        System.out.println("\n=== Lista Após Alterações ===");
-        listar(nomes, quantidades, qtd);
+        } while (opcao != 6);
 
         sc.close();
     }
