@@ -1,4 +1,4 @@
-package java_terceiro_semestre.desafio_java_17;
+package java_terceiro_semestre;
 import java.util.Scanner;
 
 public class atv_07 {
