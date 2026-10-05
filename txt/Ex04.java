@@ -1,0 +1,18 @@
+package java_terceiro_semestre.txt;
+import java.io.FileWriter;
+import java.io.IOException;
+
+public class Ex04 {
+    public static void main(String[] args) {
+        try{
+            FileWriter fw = new FileWriter("Dado.txt");
+
+            fw.write("primeira linha\n");
+            fw.write("segunda linha\n");
+            fw.close();
+            System.out.println("Escrita concluida");
+        }catch(IOException e){
+            e.printStackTrace();
+        }
+    }
+}
